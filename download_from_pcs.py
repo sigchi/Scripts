@@ -16,8 +16,6 @@ from multiprocessing import Pool
 id_field = "Paper ID"
 video_field = "Pre-recorded Video Presentation (Required)"
 caption_field = "Pre-recorded Video Presentation Captions (Required)"
-use_doi_names = None
-destination_dir = None
 skip_existing = False
 downloaded_videos = []
 downloaded_captions = []
@@ -33,7 +31,7 @@ def convert_to_format(filepath, format):
         subprocess.check_output(
             ["ffmpeg", '-i', filepath, '-hide_banner', '-loglevel', 'error', '-y', path_no_extension+format])
     except:
-        print(f"Convertion to {format.upper()} failed for "+filepath)
+        print(f"Conversion to {format.upper()} failed for "+filepath)
         return None
     else:
         return path_no_extension + format
@@ -65,7 +63,6 @@ def process_row(data):
     row, skip_existing, use_doi_names, downloaded_videos, downloaded_captions, convert_to_vtt = data
     id = row[id_field]
     output_name = id
-    print("TEST")
     if use_doi_names and row["DOI"] != "":
         # Use DOI for renaming
         output_name = row["DOI"].rsplit('/', 1)[-1]
